@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVETAS</title>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <h1>REVETAS</h1>
+            <div id="about_me">
+                <a href="https://www.linkedin.com/in/matias-andres-revetria/">Matias Revetria</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <h2>SINGUP</h2>
+        <section id="login-box">
+            <div class="box">
+                <form action="/home" method="post">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input type="submit" value="singup">
+                    <div id="already">
+                        <a href="#">Already have an account?</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>
