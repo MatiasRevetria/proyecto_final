@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home page</title>
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <h1>REVETAS {{title}}</h1>
+            <a href="/recetas/">recetas</a>
+            <a href="/favoritas/"></a>
+        </div>
+    </header>
+    <main>
+        {% for receta in recetas %}
+
+        <div>
+            <h1>{{receta.title}}</h1>
+            {% if receta.cooked == False%}
+            <p>Receta sin realizar ⏰</p>
+            {% else %}
+            <p>Receta cocinada! ✅</p>
+            {% endif %}
+            
+            <button> Cocinada! </button>
+            <button> Favorita!</button>
+        </div>
+
+        {% endfor %}
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>
