@@ -18,7 +18,7 @@
         <h2>SINGUP</h2>
         <section id="login-box">
             <div class="box">
-                <form action="/home" method="post">
+                <form action="home/" method="post">
                     {% csrf_token %}
                     {{form.as_p}}
                     <input type="submit" value="singup">

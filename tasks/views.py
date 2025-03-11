@@ -13,13 +13,17 @@ def main_page(request):
         'recetas': recetas,
     })
 
-def recetas(request,id):
+#def recetas(request,id):
     #recetas = list(Receta.objects.values())
     #return JsonResponse(receta, safe=False)
     #receta = Receta.objects.get(id=id)
-    receta = get_object_or_404(Receta,id=id)
-    return HttpResponse('receta: %s' % receta.title)
+#   receta = get_object_or_404(Receta,id=id)
+#   return HttpResponse('receta: %s' % receta.title)
+
+def recetas(request):
+    recetas = Receta.objects.all()
+    return render(request,'recetas.html',{'recetas':recetas})
 
 def favoritas(request):
-    pass
+    return HttpResponse('Hello world!')
     

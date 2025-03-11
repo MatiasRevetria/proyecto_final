@@ -14,21 +14,8 @@
         </div>
     </header>
     <main>
-        {% for receta in recetas %}
-
-        <div>
-            <h1>{{receta.title}}</h1>
-            {% if receta.cooked == False%}
-            <p>Receta sin realizar ⏰</p>
-            {% else %}
-            <p>Receta cocinada! ✅</p>
-            {% endif %}
-            
-            <button> Cocinada! </button>
-            <button> Favorita!</button>
-        </div>
-
-        {% endfor %}
+        {% block content %}
+        {% endblock %}
     </main>
     <footer>
 
