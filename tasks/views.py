@@ -24,6 +24,9 @@ def recetas(request):
     recetas = Receta.objects.all()
     return render(request,'recetas.html',{'recetas':recetas})
 
+def create_receta(request):
+    return render(request,'create_receta.html')
+
 def favoritas(request):
     return HttpResponse('Hello world!')
     

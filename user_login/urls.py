@@ -4,5 +4,5 @@ from .views import *
 #from . import views => views.<funcion>
 
 urlpatterns = [
-    path('',login_user),
+    path('',create_user),
 ]

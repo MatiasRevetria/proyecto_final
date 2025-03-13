@@ -15,8 +15,8 @@
         </div>
     </header>
     <main>
-        <h2>SINGUP</h2>
-        <section id="login-box">
+<!--    <h2>SINGUP</h2>
+         <section id="login-box">
             <div class="box">
                 <form action="home/" method="post">
                     {% csrf_token %}
@@ -28,6 +28,10 @@
                 </form>
             </div>
         </section>
+-->  
+        {% block login %}
+
+        {% endblock %}
     </main>
     <footer>
 
