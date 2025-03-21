@@ -1,5 +1,5 @@
 from django import forms
 
 class New_user(forms.Form):
-    name = forms.CharField(label="Nombre de usuario",max_length=255)
-    passwd = forms.CharField(label="Ingrese contrasena",max_length=255)
+    name = forms.CharField(max_length=255,widget=forms.TextInput(attrs={'placeholder': 'User'}),label='')
+    passwd = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Password'}),max_length=255,label='')
