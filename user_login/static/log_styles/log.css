@@ -71,3 +71,46 @@ form button:hover{
     color: aliceblue;
 }
 
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes slideUp{
+    from{
+        -webkit-transform: translateY(50px);
+        opacity: 0;
+    }
+    to{
+        -webkit-transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.show-up {
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideUp 0.5s ease-out forwards;
+    animation-delay: 0.3s;
+
+    -webkit-transform: translateY(50px);
+    -webkit-animation: slideUp 0.5s ease-out forwards;
+    -webkit-animation-delay: 0.3s;
+}
+
+@media only screen and (max-width: 1100px) {
+    .login-box{
+        width: 60%;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
