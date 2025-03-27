@@ -12,3 +12,6 @@ class Receta(models.Model):
     def __str__(self):
         return self.title + ' - ' + self.user.name
     
+
+
+
