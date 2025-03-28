@@ -14,4 +14,3 @@ class Receta(models.Model):
     
 
 
-
