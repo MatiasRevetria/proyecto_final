@@ -3,9 +3,24 @@
     padding: 0%;
     box-sizing: border-box;
 }
-body{
-    background-color:  #145a32;
+body {
+    position: relative;
+    background-color: #145a32;
 }
+.background-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/fondo_cocina.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.65; 
+    z-index: -1; 
+}
+
 
 .nav{
     display: flex;
@@ -52,7 +67,7 @@ form input{
     border-radius: 10px;
     padding: 5%;
     margin-bottom: 8%;
-    background-color: #0e3d22;
+    background-color: aliceblue;
     border: 0;
     color: aliceblue;
 }
@@ -83,7 +98,7 @@ form button:hover{
 
 @keyframes slideUp {
     from {
-        transform: translateY(50px);
+        transform: translateY(-50px);
         opacity: 0;
     }
     to {
