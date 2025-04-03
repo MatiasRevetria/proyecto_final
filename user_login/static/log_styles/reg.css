@@ -47,7 +47,7 @@ main{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    backdrop-filter: filter(blur(20px));
+    backdrop-filter: blur(5px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     padding: 5%;
 }

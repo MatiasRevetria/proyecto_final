@@ -28,13 +28,6 @@ db.sqlite3-journal
 media/
 staticfiles/
 
-# Virtual Environment
-venv/
-env/
-ENV/
-.env
-.venv
-
 # IDE
 .idea/
 .vscode/
