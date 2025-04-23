@@ -13,7 +13,7 @@ class Receta(models.Model):
         return self.title + ' - ' + self.user.name
     
 class Valoracion(models.Model):
-    stars = models.IntegerChoices()
+    stars = models.IntegerChoices('Valoracion','1,2,3,4,5')
     comment = models.TextField()
     receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
 
