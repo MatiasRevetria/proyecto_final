@@ -6,5 +6,5 @@ urlpatterns = [
 #   path('recetas/<int:id>',recetas),
     path('recetas/',recetas),
     path('favoritas/',favoritas),
-    path('nueva/',create_receta)
+    path('nueva/',crear_receta),
 ]

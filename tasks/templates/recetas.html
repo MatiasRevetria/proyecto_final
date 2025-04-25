@@ -5,7 +5,30 @@
     {% for receta in recetas %}
 
     <div>
-        <h1>{{receta.title}}</h1>
+        <div>
+            <h1>{{receta.title}}</h1>
+            <p>{{receta.description}}</p>
+            <p>Tiempo de cocción: {{receta.coccion}} minutos</p>
+            <p>Ingredientes:</p>
+            <ul>
+                {% for ingrediente in receta.ingredients %}
+                <li>{{ingrediente}}</li>
+                {% endfor %}
+            </ul>
+            <p>Pasos:</p>
+            <ol>
+                {% for paso in receta.steps %}
+                <li>{{paso}}</li>
+                {% endfor %}
+            </ol>
+            <p>Receta creada el: {{receta.date}}</p>
+            <p>Receta creada por: {{receta.user.name}}</p>
+            <p>Receta favorita por:</p>
+            <ul>
+                {% for user in receta.favorited_by.all %}
+                <li>{{user.username}}</li>
+                {% endfor %}
+        </div>
         {% if receta.cooked == False%}
         <p>Receta sin realizar ⏰</p>
         {% else %}

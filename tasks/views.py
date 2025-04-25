@@ -1,7 +1,10 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
+from django.views.generic import CreateView 
 from django.http import HttpResponse,JsonResponse
 from .models import Receta
 from user_login.models import Usuario
+from .forms import RecetaNueva
+
 
 
 # Create your views here.
@@ -24,9 +27,21 @@ def recetas(request):
     recetas = Receta.objects.all()
     return render(request,'recetas.html',{'recetas':recetas})
 
-def create_receta(request):
-    return render(request,'create_receta.html')
-
 def favoritas(request):
     return HttpResponse('Hello world!')
+
+def crear_receta(request):
+    if request.method == 'GET':
+        return render(request,'create_receta.html',{'form':RecetaNueva()})
+    elif request.method == 'POST':
+        form = RecetaNueva(request.POST)
+        if form.is_valid():
+            receta = Receta(title=form.cleaned_data['title'],
+                            description=form.cleaned_data['description'],
+                            user=request.user,
+                            coccion=form.cleaned_data['coccion']
+                            )
+            receta.save()
+            return redirect('/recetas/')
+
     

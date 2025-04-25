@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from user_login.models import *
 
 # Create your models here.
@@ -6,8 +7,10 @@ class Receta(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    coccion = models.IntegerField(default=0)
     cooked = models.BooleanField(default=False)
     favs = models.BooleanField(default=False)
+    date = models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.title + ' - ' + self.user.name
@@ -26,7 +29,7 @@ class Categoria(models.Model):
 
 class Comentario(models.Model):
     txt = models.TextField()
-    date = models.DateField()
+    date = models.DateField(default=timezone.now)
     receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
     user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
 
@@ -38,7 +41,7 @@ class Ingrediente(models.Model):
     unidad = models.CharField(max_length=255)
 
     def __str__(self) -> str:
-        return self.name + self.cantidad
+        return self.name + self.unidad
     
 
 class RecetaIngrediente(models.Model):
@@ -53,7 +56,7 @@ class CarritoIngrediente(models.Model):
     ingrediente = models.ForeignKey(Ingrediente,on_delete=models.CASCADE)
 
 class Registro(models.Model):
-    fecha = models.DateField()
+    fecha = models.DateField(default=timezone.now)
     notas = models.TextField()
     user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
     receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
@@ -68,5 +71,5 @@ class RecetaFavorita(models.Model):
 class Notificacion(models.Model):
     tipo = models.CharField(max_length=255)
     msj = models.TextField()
-    fecha = models.DateField()
+    fecha = models.DateField(default=timezone.now)
     user = models.ForeignKey(Usuario,on_delete=models.CASCADE)

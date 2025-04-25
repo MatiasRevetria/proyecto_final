@@ -22,8 +22,7 @@ def login_user(request):
         for user in users:
             if request.POST['name'] == user.name:
                 return redirect('/home/')
-            else:
-                return render(request,'old_user.html',{'form':Old_user(),'error':'User or Password incorrect'})
+        return render(request,'old_user.html',{'form':Old_user(),'error':'User or Password incorrect'})
             
 def landing_page(request):
     return render(request,'landing_page.html')

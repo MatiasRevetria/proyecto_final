@@ -1,0 +1,10 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <h1>Crear receta</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Crear receta</button>
+    </form>
+{% endblock %}
