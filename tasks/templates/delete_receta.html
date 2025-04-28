@@ -1,0 +1,14 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<h2>Estas seguro que queres eliminar esta receta?</h2>
+<p>{{receta.title}}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Eliminar</button>
+</form>
+
+<a href="/recetas/">No, Cancelar</a>
+{% endblock %}
+    

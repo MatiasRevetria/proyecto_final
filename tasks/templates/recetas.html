@@ -37,6 +37,8 @@
         
         <button> Cocinada! </button>
         <button> Favorita!</button>
+        <a href="{% url 'editar_receta' receta.id %}"> Editar</a>
+        <a href="{% url 'eliminar_receta' receta.id %}">Eliminar</a>
     </div>
 
     {% endfor %}

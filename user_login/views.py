@@ -15,14 +15,25 @@ def create_user(request):
             return render(request,'new_user.html',{'form': New_user(),'error': 'Passwords do not match'})
         
 def login_user(request):
-    users = Usuario.objects.all()
     if request.method == 'GET':
-        return render(request,'old_user.html',{'form': Old_user()})
+        return render(request, 'old_user.html', {'form': Old_user()})
     else:
-        for user in users:
-            if request.POST['name'] == user.name:
-                return redirect('/home/')
-        return render(request,'old_user.html',{'form':Old_user(),'error':'User or Password incorrect'})
+        name = request.POST['name']
+        passwd = request.POST['passwd']
+
+        users = Usuario.objects.filter(name=name, passwd=passwd)
+        
+        if users.exists():
+            user = users.first()  
+            request.session['usuario_id'] = user.id
+            return redirect('/home/')
+        else:
+            return render(request, 'old_user.html', {
+                'form': Old_user(),
+                'error': 'Usuario o contraseña incorrectos'
+            })
+
+
             
 def landing_page(request):
     return render(request,'landing_page.html')
