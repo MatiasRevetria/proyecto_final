@@ -14,7 +14,16 @@
             <a href="/recetas/">recetas</a>
             <a href="/favoritas/">Mis favoritas</a>
             <a href="/nueva/">Crear receta</a>
-            <a href="/logout/">Cerrar sesion</a>
+            
+            <div style="margin-left: auto; padding-right: 20px;">
+                {% if request.user.is_authenticated %}
+                    Usuario: {{ request.user.username }}
+                {% elif request.session.username %}
+                    Usuario: {{ request.session.username }}
+                {% else %}
+                    <a href="/login/">Iniciar sesión</a>
+                {% endif %}
+            </div>
         </div>
     </header>
     <main>

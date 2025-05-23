@@ -34,6 +34,19 @@ def recetas(request):
     recetas = Receta.objects.all()
     return render(request,'recetas.html',{'recetas':recetas})
 
+def mis_recetas(request):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('/login/')
+    
+    usuario = Usuario.objects.get(id=usuario_id)
+    recetas = Receta.objects.filter(user=usuario)
+    if not recetas:
+        return render(request, 'mis_recetas.html', {'recetas': recetas, 'mensaje': 'No tienes recetas creadas'})
+    return render(request, 'mis_recetas.html', {'recetas': recetas})
+
+
+
 def favoritas(request):
     return HttpResponse('Hello world!')
 
@@ -73,6 +86,7 @@ def editar_receta(request, id):
             'coccion': receta.coccion
         })
         return render(request, 'create_receta.html', {'form': form, 'receta': receta})
+    
     elif request.method == 'POST':
         form = RecetaNueva(request.POST)
         if form.is_valid():

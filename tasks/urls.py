@@ -9,5 +9,6 @@ urlpatterns = [
     path('favoritas/',favoritas),
     path('nueva/',crear_receta),
     path('editar/<int:id>' , editar_receta, name='editar_receta'),
-    path('receta/<int:id>',eliminar_receta, name='eliminar_receta')
+    path('eliminar/<int:id>',eliminar_receta, name='eliminar_receta'),
+    path('mis_recetas/',mis_recetas, name = 'mis_recetas')
 ]
