@@ -45,9 +45,17 @@ def mis_recetas(request):
         return render(request, 'mis_recetas.html', {'recetas': recetas, 'mensaje': 'No tienes recetas creadas'})
     return render(request, 'mis_recetas.html', {'recetas': recetas})
 
+def marcar_cocinada(request,receta_id):
+    receta = get_object_or_404(Receta, id = receta_id)
+    receta.cooked = True
+    receta.save()
 
+def marcar_favorita(request, receta_id):
+    receta = get_object_or_404(Receta, id = receta_id)
+    receta.favs = True
+    receta.save()
 
-def favoritas(request):
+def favoritas(request): 
     return HttpResponse('Hello world!')
 
 def crear_receta(request):

@@ -9,9 +9,9 @@
         <p>{{ recetas.description }}</p>
         <p>Ingredientes: {{ recetas.ingredients }}</p>
         <p>Instrucciones: {{ recetas.instructions }}</p>
-        <a href="{% url 'receta_detail' recetas.id %}">Ver receta</a>
-        <a href="{% url 'delete_receta' recetas.id %}">Eliminar receta</a>
-        <a href="{% url 'edit_receta' recetas.id %}">Editar receta</a>
+        <a href="{% url 'eliminar_receta' recetas.id %}">Eliminar receta</a>
+        <a href="{% url 'editar_receta' recetas.id %}">Editar receta</a>
     </div>
+{% endfor %}
 
 {% endblock %}

@@ -10,5 +10,7 @@ urlpatterns = [
     path('nueva/',crear_receta),
     path('editar/<int:id>' , editar_receta, name='editar_receta'),
     path('eliminar/<int:id>',eliminar_receta, name='eliminar_receta'),
-    path('mis_recetas/',mis_recetas, name = 'mis_recetas')
+    path('mis_recetas/',mis_recetas, name = 'mis_recetas'),
+    path('/cocinado/<int:receta_id>/', marcar_cocinada, name= 'marcar_cocinada'),
+    path('/favorita/<int:receta_id>/', marcar_favorita, name= 'marcar_favorita')
 ]
