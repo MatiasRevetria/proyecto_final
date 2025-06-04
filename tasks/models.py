@@ -11,6 +11,7 @@ class Receta(models.Model):
     cooked = models.BooleanField(default=False)
     favs = models.BooleanField(default=False)
     date = models.DateField(default=timezone.now)
+    image = models.ImageField(upload_to="recetas_image/", null=True, blank=True)
 
     def __str__(self):
         return self.title + ' - ' + self.user.name

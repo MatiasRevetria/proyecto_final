@@ -68,11 +68,12 @@ def crear_receta(request):
     if request.method == 'GET':
         return render(request,'create_receta.html',{'form':RecetaNueva()})
     elif request.method == 'POST':
-        form = RecetaNueva(request.POST)
+        form = RecetaNueva(request.POST, request.FILES)
         if form.is_valid():
             receta = Receta(title=form.cleaned_data['title'],
                             description=form.cleaned_data['description'],
                             coccion=form.cleaned_data['coccion'],
+                            image=form.cleaned_data['image'],
                             user=usuario
                             )
             receta.save()
@@ -96,11 +97,12 @@ def editar_receta(request, id):
         return render(request, 'create_receta.html', {'form': form, 'receta': receta})
     
     elif request.method == 'POST':
-        form = RecetaNueva(request.POST)
+        form = RecetaNueva(request.POST, request.FILES)
         if form.is_valid():
             receta.title = form.cleaned_data['title']
             receta.description = form.cleaned_data['description']
             receta.coccion = form.cleaned_data['coccion']
+            receta.image = form.cleaned_data['image']
             receta.save()
             return redirect('/recetas/')
 

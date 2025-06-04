@@ -1,11 +1,24 @@
 from django import forms
-from .models import *
+from .models import Receta, Comentario
 
+class RecetaNueva(forms.ModelForm):
+    class Meta:
+        model = Receta
+        fields = ['title', 'description', 'coccion', 'image']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Título'}),
+            'description': forms.Textarea(attrs={'placeholder': 'Descripción'}),
+            'coccion': forms.NumberInput(attrs={'placeholder': 'Minutos'}),
+        }
 
-class RecetaNueva(forms.Form):
-    title = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Titulo','label':''}),max_length=255)
-    description = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Description','label':''}),max_length=255)
-    coccion = forms.IntegerField()
-
-class ComentarReceta(forms.Form):
-    txt = forms.CharField(widget=forms.Textarea(attrs={'placeholder': 'Escribi un comentario', 'label': '','rows':3,'cols':40}),max_length=255)
+class ComentarReceta(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['txt']
+        widgets = {
+            'txt': forms.Textarea(attrs={
+                'placeholder': 'Escribí un comentario...',
+                'rows': 3,
+                'cols': 40
+            })
+        }

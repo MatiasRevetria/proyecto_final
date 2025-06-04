@@ -6,6 +6,9 @@
 
     <div>
         <div>
+            {% if receta.imagen %}
+                    <img src="{{ receta.imagen.url }}" alt="Imagen de {{ receta.title }}" style="width:200px;">
+            {% endif %}
             <h1>{{receta.title}}</h1>
             <p>{{receta.description}}</p>
             <p>Tiempo de cocción: {{receta.coccion}} minutos</p>
