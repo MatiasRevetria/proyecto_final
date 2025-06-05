@@ -6,8 +6,8 @@
 
     <div>
         <div>
-            {% if receta.imagen %}
-                    <img src="{{ receta.imagen.url }}" alt="Imagen de {{ receta.title }}" style="width:200px;">
+            {% if receta.image %}
+                    <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
             {% endif %}
             <h1>{{receta.title}}</h1>
             <p>{{receta.description}}</p>
@@ -42,8 +42,10 @@
         
         <button> Cocinada! </button>
         <button> Favorita!</button>
+        {% if receta.user.id == usuario_id %}
         <a href="{% url 'editar_receta' receta.id %}"> Editar</a>
         <a href="{% url 'eliminar_receta' receta.id %}"> Eliminar</a>
+        {% endif %}
     </div>
 
     {% endfor %}

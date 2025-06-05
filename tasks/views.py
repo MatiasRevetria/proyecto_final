@@ -3,7 +3,7 @@ from django.views.generic import CreateView
 from django.http import HttpResponse,JsonResponse
 from .models import Receta
 from user_login.models import Usuario
-from .forms import RecetaNueva
+from .forms import RecetaNueva,RecetaIngrediente, RecetaIngredienteFormSet
 
 
 
@@ -32,7 +32,8 @@ def logout_user(request):
 
 def recetas(request):
     recetas = Receta.objects.all()
-    return render(request,'recetas.html',{'recetas':recetas})
+    usuario_id = request.session.get('usuario_id')
+    return render(request,'recetas.html',{'recetas':recetas, 'usuario_id': usuario_id})
 
 def mis_recetas(request):
     usuario_id = request.session.get('usuario_id')
@@ -66,10 +67,11 @@ def crear_receta(request):
     usuario = Usuario.objects.get(id=usuario_id)
 
     if request.method == 'GET':
-        return render(request,'create_receta.html',{'form':RecetaNueva()})
+        return render(request,'create_receta.html',{'form':RecetaNueva(), 'formset': RecetaIngredienteFormSet(queryset=RecetaIngrediente.objects.none())})
     elif request.method == 'POST':
         form = RecetaNueva(request.POST, request.FILES)
-        if form.is_valid():
+        formset = RecetaIngredienteFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
             receta = Receta(title=form.cleaned_data['title'],
                             description=form.cleaned_data['description'],
                             coccion=form.cleaned_data['coccion'],
@@ -77,6 +79,11 @@ def crear_receta(request):
                             user=usuario
                             )
             receta.save()
+
+            for ing_form in formset:
+                if ing_form.cleaned_data:
+                    ingrediente = ing_form.cleaned_data['ingrediente']
+                    RecetaIngrediente.objects.create(receta=receta, ingrediente=ingrediente)
             return redirect('/recetas/')
         
 
@@ -94,7 +101,7 @@ def editar_receta(request, id):
             'description': receta.description,
             'coccion': receta.coccion
         })
-        return render(request, 'create_receta.html', {'form': form, 'receta': receta})
+        return render(request, 'edit_receta.html', {'form': form, 'receta': receta})
     
     elif request.method == 'POST':
         form = RecetaNueva(request.POST, request.FILES)

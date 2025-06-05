@@ -1,5 +1,6 @@
 from django import forms
-from .models import Receta, Comentario
+from django.forms import modelformset_factory
+from .models import Receta, Comentario, RecetaIngrediente, Ingrediente
 
 class RecetaNueva(forms.ModelForm):
     class Meta:
@@ -22,3 +23,9 @@ class ComentarReceta(forms.ModelForm):
                 'cols': 40
             })
         }
+
+RecetaIngredienteFormSet = modelformset_factory(
+    RecetaIngrediente,
+    fields=('ingrediente',),
+    extra = 4,
+)

@@ -5,6 +5,13 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
+
+        <h3>Ingredientes</h3>
+        {{ formset.managment_form }}
+        {% for form_ing in formset %}
+            {{ form_ing }}
+        {% endfor %}
+        
         <button type="submit">Crear receta</button>
     </form>
 {% endblock %}

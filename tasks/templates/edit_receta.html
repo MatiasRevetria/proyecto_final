@@ -7,6 +7,12 @@
 <form method=""post enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+
+    {% if receta.image %}
+    <p>Imagen actual:</p>
+    <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="max-width: 200px;">
+    {% endif %}
+
     <button type="submit">Guardar cambios</button>
 </form>
 
