@@ -46,10 +46,11 @@ class Ingrediente(models.Model):
     
 
 class RecetaIngrediente(models.Model):
-    receta = models.ForeignKey(Receta, on_delete=models.CASCADE)
-    nombre = models.CharField(max_length=255, default="Ingrediente")
-    unidad = models.CharField(max_length=50, default='unidad')
-    cantidad = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    receta = models.ForeignKey(Receta, on_delete=models.CASCADE, related_name="ingredientes")
+    nombre = models.CharField(max_length=255)
+    cantidad = models.FloatField()
+    unidad = models.CharField(max_length=50)
+
 
     def __str__(self):
         return f"{self.nombre} - {self.cantidad} {self.unidad}"

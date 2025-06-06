@@ -4,17 +4,19 @@
 
 <h2>Editar Receta</h2>
 
-<form method=""post enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
 
-    {% if receta.image %}
-    <p>Imagen actual:</p>
-    <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="max-width: 200px;">
-    {% endif %}
+    <h3>Ingredientes</h3>
+    {{ formset.management_form }}
+    {% for subform in formset %}
+        {{ subform.as_p }}
+    {% endfor %}
 
     <button type="submit">Guardar cambios</button>
 </form>
+
 
 <a href="/recetas/">Cancelar</a>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'main.html' %}
+{% load custom_filters %}
 
 {% block content %}
 
@@ -6,10 +7,10 @@
 
     <div>
         <div>
-            {% if receta.image %}
-                    <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
-            {% endif %}
             <h1>{{receta.title}}</h1>
+            {% if receta.image %}
+                <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
+            {% endif %}
             <p>{{receta.description}}</p>
             <p>Tiempo de cocción: {{receta.coccion}} minutos</p>
             <p>Ingredientes:</p>
@@ -38,7 +39,29 @@
         {% else %}
         <p>Receta cocinada! ✅</p>
         {% endif %}
-
+        <div class="comentarios">
+            <h3>Comentarios</h3>
+            <ul>
+            {% for comentario in comentarios %}
+                <li><strong>{{ comentario.user.name }}:</strong> {{ comentario.txt }}</li>
+                <p>{{ comentario.date}}</p>
+                {% empty %}
+                <li>Sin comentarios...</li>
+            {% endfor %}
+            </ul>
+        </div>
+        <div class="comentar">
+            {% if usuario_id %}
+        <form method="post">
+        {% csrf_token %}
+        {{ forms_dict|dict_get:receta.id.as_p }}
+        <input type="hidden" name="receta_id" value="{{ receta.id }}">
+        <button type="submit">Comentar</button>
+        </form>
+        {% else %}
+            <p><a href="/login/">Iniciá sesión</a> para comentar.</p>
+        {% endif %}
+        </div>
         
         
         <button> Cocinada! </button>
