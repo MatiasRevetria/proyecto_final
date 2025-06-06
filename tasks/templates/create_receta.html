@@ -2,16 +2,19 @@
 
 {% block content %}
     <h1>Crear receta</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
 
-        <h3>Ingredientes</h3>
-        {{ formset.managment_form }}
-        {% for form_ing in formset %}
-            {{ form_ing }}
-        {% endfor %}
-        
-        <button type="submit">Crear receta</button>
-    </form>
+    <h3>Ingredientes:</h3>
+    {{ formset.management_form }}
+    {% for subform in formset %}
+        <div>
+            {{ subform.nombre }} {{ subform.unidad }} {{ subform.cantidad }}
+        </div>
+    {% endfor %}
+
+    <button type="submit">Crear receta</button>
+</form>
+
 {% endblock %}

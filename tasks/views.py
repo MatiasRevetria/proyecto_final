@@ -67,24 +67,29 @@ def crear_receta(request):
     usuario = Usuario.objects.get(id=usuario_id)
 
     if request.method == 'GET':
-        return render(request,'create_receta.html',{'form':RecetaNueva(), 'formset': RecetaIngredienteFormSet(queryset=RecetaIngrediente.objects.none())})
+        form = RecetaNueva()
+        formset = RecetaIngredienteFormSet(queryset=RecetaIngrediente.objects.none())
+        return render(request, 'create_receta.html', {'form': form, 'formset': formset})
+
     elif request.method == 'POST':
         form = RecetaNueva(request.POST, request.FILES)
         formset = RecetaIngredienteFormSet(request.POST)
+
         if form.is_valid() and formset.is_valid():
-            receta = Receta(title=form.cleaned_data['title'],
-                            description=form.cleaned_data['description'],
-                            coccion=form.cleaned_data['coccion'],
-                            image=form.cleaned_data['image'],
-                            user=usuario
-                            )
+            receta = form.save(commit=False)
+            receta.user = usuario
             receta.save()
 
             for ing_form in formset:
                 if ing_form.cleaned_data:
-                    ingrediente = ing_form.cleaned_data['ingrediente']
-                    RecetaIngrediente.objects.create(receta=receta, ingrediente=ingrediente)
+                    ingrediente = ing_form.save(commit=False)
+                    ingrediente.receta = receta
+                    ingrediente.save()
+
             return redirect('/recetas/')
+        
+        return render(request, 'create_receta.html', {'form': form, 'formset': formset})
+
         
 
 def editar_receta(request, id):

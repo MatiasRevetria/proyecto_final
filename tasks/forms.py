@@ -26,6 +26,11 @@ class ComentarReceta(forms.ModelForm):
 
 RecetaIngredienteFormSet = modelformset_factory(
     RecetaIngrediente,
-    fields=('ingrediente',),
-    extra = 4,
+    fields=('nombre', 'unidad', 'cantidad'),
+    extra=3,  # cantidad de formularios vacíos por defecto
+    widgets={
+        'nombre': forms.TextInput(attrs={'placeholder': 'Ej: Harina'}),
+        'unidad': forms.TextInput(attrs={'placeholder': 'Ej: gramos'}),
+        'cantidad': forms.NumberInput(attrs={'placeholder': 'Ej: 100'}),
+    }
 )

@@ -14,10 +14,11 @@
             <p>Tiempo de cocción: {{receta.coccion}} minutos</p>
             <p>Ingredientes:</p>
             <ul>
-                {% for ingrediente in receta.ingredients %}
-                <li>{{ingrediente}}</li>
+                {% for ingrediente in receta.ingredientes.all %}
+                <li>{{ ingrediente.cantidad }} {{ ingrediente.unidad }} de {{ ingrediente.nombre }}</li>
                 {% endfor %}
             </ul>
+
             <p>Pasos:</p>
             <ol>
                 {% for paso in receta.steps %}
