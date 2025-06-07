@@ -42,7 +42,7 @@
         <div class="comentarios">
             <h3>Comentarios</h3>
             <ul>
-            {% for comentario in comentarios %}
+            {% for comentario in receta.comentarios.all %}
                 <li><strong>{{ comentario.user.name }}:</strong> {{ comentario.txt }}</li>
                 <p>{{ comentario.date}}</p>
                 {% empty %}
@@ -52,15 +52,18 @@
         </div>
         <div class="comentar">
             {% if usuario_id %}
-        <form method="post">
+    <form method="post">
         {% csrf_token %}
-        {{ forms_dict|dict_get:receta.id.as_p }}
+        {% with form=forms_dict|dict_get:receta.id %}
+            {{ form.as_p }}
+        {% endwith %}
         <input type="hidden" name="receta_id" value="{{ receta.id }}">
         <button type="submit">Comentar</button>
-        </form>
-        {% else %}
+    </form>
+            {% else %}
             <p><a href="/login/">Iniciá sesión</a> para comentar.</p>
         {% endif %}
+
         </div>
         
         

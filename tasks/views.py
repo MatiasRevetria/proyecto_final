@@ -31,29 +31,22 @@ def logout_user(request):
 #   return HttpResponse('receta: %s' % receta.title)
 
 def recetas(request):
-    usuario_id = request.session.get('usuario_id')
     recetas = Receta.objects.all()
-
-    # Diccionario de formularios por receta
+    usuario_id = request.session.get('usuario_id')
+    
+    # 1. Inicializar formularios por receta
     forms_dict = {receta.id: ComentarReceta() for receta in recetas}
 
+    # 2. Procesar POST
     if request.method == 'POST':
-        if not usuario_id:
-            return redirect('/login/')
-
-        receta_id = request.POST.get('receta_id')
-        receta = get_object_or_404(Receta, id=receta_id)
         form = ComentarReceta(request.POST)
-
-        if form.is_valid():
+        receta_id = request.POST.get('receta_id')
+        if form.is_valid() and usuario_id and receta_id:
             comentario = form.save(commit=False)
-            comentario.receta = receta
             comentario.user = Usuario.objects.get(id=usuario_id)
+            comentario.receta = Receta.objects.get(id=receta_id)
             comentario.save()
             return redirect('/recetas/')
-
-        # Si hay error, devolvemos el form con errores
-        forms_dict[int(receta_id)] = form
 
     return render(request, 'recetas.html', {
         'recetas': recetas,

@@ -31,8 +31,9 @@ class Categoria(models.Model):
 class Comentario(models.Model):
     txt = models.TextField()
     date = models.DateField(default=timezone.now)
-    receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
-    user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    receta = models.ForeignKey(Receta, on_delete=models.CASCADE, related_name='comentarios')
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
 
     def __str__(self) -> str:
         return self.receta + self.txt + self.date + self.user 
