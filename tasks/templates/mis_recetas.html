@@ -6,6 +6,9 @@
 {% for recetas in recetas %}
     <div>
         <h3>{{ recetas.title }}</h3>
+        {% if recetas.image %}
+            <img src="{{recetas.image}}" alt="Imagen de la receta" style="width: 200px;">
+        {% endif %}
         <p>{{ recetas.description }}</p>
         <p>Ingredientes: {{ recetas.ingredients }}</p>
         <p>Instrucciones: {{ recetas.instructions }}</p>
