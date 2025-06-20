@@ -3,6 +3,13 @@ from django.utils import timezone
 from user_login.models import *
 
 # Create your models here.
+class Categoria(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
+    
+
 class Receta(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
@@ -12,7 +19,8 @@ class Receta(models.Model):
     favs = models.BooleanField(default=False)
     date = models.DateField(default=timezone.now)
     image = models.ImageField(upload_to="recetas_image/", null=True, blank=True)
-
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='recetas', null=True)
+    
     def __str__(self):
         return self.title + ' - ' + self.user.name
     
@@ -22,11 +30,6 @@ class Valoracion(models.Model):
     receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
 
 
-class Categoria(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self) -> str:
-        return self.name
 
 class Comentario(models.Model):
     txt = models.TextField()

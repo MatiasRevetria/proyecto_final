@@ -69,11 +69,25 @@ def marcar_cocinada(request,receta_id):
     receta = get_object_or_404(Receta, id = receta_id)
     receta.cooked = True
     receta.save()
+    return redirect('/recetas/')
+
+def desmarcar_cocinada(request,receta_id):
+    receta = get_object_or_404(Receta,id = receta_id)
+    receta.cooked = False
+    receta.save()
+    return redirect('/recetas/')
 
 def marcar_favorita(request, receta_id):
     receta = get_object_or_404(Receta, id = receta_id)
     receta.favs = True
     receta.save()
+    return redirect('/recetas/')
+
+def desmarcar_favorita(request, receta_id):
+    receta = get_object_or_404(Receta, id = receta_id)
+    receta.favs = False
+    receta.save()
+    return redirect('/recetas/')
 
 def favoritas(request): 
     return HttpResponse('Hello world!')

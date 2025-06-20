@@ -7,7 +7,15 @@
 
     <div>
         <div>
-            <h1>{{receta.title}}</h1>
+            <h1>
+                {% if receta.favs == True %}
+                {{receta.title}} ⭐
+                {% else %}
+                {{receta.title}}
+                {% endif %}
+            </h1>
+            
+
             {% if receta.image %}
                 <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
             {% endif %}
@@ -28,7 +36,6 @@
             </ol>
             <p>Receta creada el: {{receta.date}}</p>
             <p>Receta creada por: {{receta.user.name}}</p>
-            <p>Receta favorita por:</p>
             <ul>
                 {% for user in receta.favorited_by.all %}
                 <li>{{user.username}}</li>
@@ -66,9 +73,26 @@
 
         </div>
         
+        {% if receta.cooked == True %}
+        <a href="{% url 'desmarcar_cocinada' receta.id %}">
+            <button> No la cocine </button>
+        </a>
+        {% else %}
+        <a href="{% url 'marcar_cocinada' receta.id %}">
+            <button> La cocine </button>
+        </a>
+        {% endif %}
+
+        {% if receta.favs == True %}
+        <a href="{% url 'desmarcar_favorita' receta.id %}">
+            <button> No es mi favorita</button>
+        </a>
+        {% else %}
+        <a href="{% url 'marcar_favorita' receta.id %}">
+            <button> Es mi favorita!</button>
+        </a>
+        {% endif %}
         
-        <button> Cocinada! </button>
-        <button> Favorita!</button>
         {% if receta.user.id == usuario_id %}
         <a href="{% url 'editar_receta' receta.id %}"> Editar</a>
         <a href="{% url 'eliminar_receta' receta.id %}"> Eliminar</a>
