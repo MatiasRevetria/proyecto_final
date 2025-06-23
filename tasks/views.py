@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from django.views.generic import CreateView 
 from django.http import HttpResponse,JsonResponse
-from .models import Receta, Comentario
+from .models import Receta, Comentario, Valoracion, VALORACION
 from user_login.models import Usuario
 from .forms import RecetaNueva,RecetaIngrediente, RecetaIngredienteFormSet, ComentarReceta
 
@@ -22,13 +22,6 @@ def logout_user(request):
     except KeyError:
         pass
     return redirect('/login/')
-
-#def recetas(request,id):
-    #recetas = list(Receta.objects.values())
-    #return JsonResponse(receta, safe=False)
-    #receta = Receta.objects.get(id=id)
-#   receta = get_object_or_404(Receta,id=id)
-#   return HttpResponse('receta: %s' % receta.title)
 
 def recetas(request):
     recetas = Receta.objects.all()
@@ -191,3 +184,20 @@ def eliminar_receta(request, id):
         return redirect('/recetas/')
     
     return render(request, 'delete_receta.html', {'receta': receta})
+
+def valorar_receta(request, receta_id):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('/login/')
+    
+    receta = get_object_or_404(Receta, id=receta_id)
+    user = Usuario.objects.get(id=usuario_id)
+
+    if request.method == 'POST':
+        puntaje = int(request.POST.get('puntaje'))
+        valoracion, created = Valoracion.objects.update_or_create(
+            receta=receta,
+            user=user,
+            defaults={'puntaje': puntaje}
+        )
+    return redirect('/recetas/')

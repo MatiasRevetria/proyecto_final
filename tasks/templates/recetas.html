@@ -15,6 +15,11 @@
                 {% endif %}
             </h1>
             
+            {% if receta.cooked == False%}
+                <p>Receta sin realizar ⏰</p>
+            {% else %}
+                <p>Receta cocinada! ✅</p>
+            {% endif %}
 
             {% if receta.image %}
                 <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
@@ -27,13 +32,24 @@
                 <li>{{ ingrediente.cantidad }} {{ ingrediente.unidad }} de {{ ingrediente.nombre }}</li>
                 {% endfor %}
             </ul>
-
             <p>Pasos:</p>
             <ol>
                 {% for paso in receta.steps %}
                 <li>{{paso}}</li>
                 {% endfor %}
             </ol>
+            <p>
+                <strong>Dificultad:</strong> {{ receta.dificultad }}
+            </p>
+            <p>
+                <strong>Categoria:</strong> {{ receta.categoria }}
+            </p>
+            <p><strong>Valoración promedio:</strong> 
+            {% for i in "12345"|slice:":receta.promedio_valoracion"|make_list %}
+                ⭐
+            {% endfor %}
+            </p>
+
             <p>Receta creada el: {{receta.date}}</p>
             <p>Receta creada por: {{receta.user.name}}</p>
             <ul>
@@ -41,11 +57,18 @@
                 <li>{{user.username}}</li>
                 {% endfor %}
         </div>
-        {% if receta.cooked == False%}
-        <p>Receta sin realizar ⏰</p>
-        {% else %}
-        <p>Receta cocinada! ✅</p>
-        {% endif %}
+        <div class="valorar">
+            <form method="post" action="{% url 'valorar_receta' receta.id %}">
+                {% csrf_token %}
+                <label>Valorar receta:</label><br>
+                <input type="radio" name="puntaje" value="1"> ⭐
+                <input type="radio" name="puntaje" value="2"> ⭐⭐
+                <input type="radio" name="puntaje" value="3"> ⭐⭐⭐
+                <input type="radio" name="puntaje" value="4"> ⭐⭐⭐⭐
+                <input type="radio" name="puntaje" value="5"> ⭐⭐⭐⭐⭐
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
         <div class="comentarios">
             <h3>Comentarios</h3>
             <ul>
@@ -59,14 +82,14 @@
         </div>
         <div class="comentar">
             {% if usuario_id %}
-    <form method="post">
-        {% csrf_token %}
-        {% with form=forms_dict|dict_get:receta.id %}
-            {{ form.as_p }}
-        {% endwith %}
-        <input type="hidden" name="receta_id" value="{{ receta.id }}">
-        <button type="submit">Comentar</button>
-    </form>
+            <form method="post">
+                {% csrf_token %}
+                {% with form=forms_dict|dict_get:receta.id %}
+                    {{ form.as_p }}
+                {% endwith %}
+                <input type="hidden" name="receta_id" value="{{ receta.id }}">
+                <button type="submit">Comentar</button>
+            </form>
             {% else %}
             <p><a href="/login/">Iniciá sesión</a> para comentar.</p>
         {% endif %}

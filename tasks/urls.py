@@ -16,5 +16,6 @@ urlpatterns = [
     path('cocinado/<int:receta_id>', marcar_cocinada, name= 'marcar_cocinada'),
     path('noconinada/<int:receta_id>',desmarcar_cocinada, name= 'desmarcar_cocinada'),
     path('favorita/<int:receta_id>', marcar_favorita, name= 'marcar_favorita'),
-    path('nofavorita/<int:receta_id>',desmarcar_favorita, name='desmarcar_favorita')
+    path('nofavorita/<int:receta_id>',desmarcar_favorita, name='desmarcar_favorita'),
+    path('valorar/<int:receta_id>/', valorar_receta, name='valorar_receta')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
