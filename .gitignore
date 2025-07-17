@@ -57,3 +57,8 @@ db.sqlite3
 db.sqlite3-journal
 media/
 staticfiles/
+
+venv/
+
+*.log
+*.sqlite3
