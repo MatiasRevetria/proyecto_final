@@ -45,9 +45,7 @@
                 <strong>Categoria:</strong> {{ receta.categoria }}
             </p>
             <p><strong>Valoración promedio:</strong> 
-            {% for i in "12345"|slice:":receta.promedio_valoracion"|make_list %}
-                ⭐
-            {% endfor %}
+            <p>Promedio de estrellas: {{ receta.promedio_valoracion|floatformat:1 }}⭐</p>
             </p>
 
             <p>Receta creada el: {{receta.date}}</p>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models import Avg
 from user_login.models import *
 
 
@@ -39,20 +40,16 @@ class Receta(models.Model):
 
     @property
     def promedio_valoracion(self):
-        valoraciones = self.valoraciones.all()
-        if valoraciones.exists():
-            return round(sum([v.puntaje for v in valoraciones]) / valoraciones.count(), 1)
-        return 0
-
-
+        return self.valoraciones.aggregate(prom=Avg('puntaje'))['prom'] or 0
     
     def __str__(self):
         return self.title + ' - ' + self.user.name
     
 class Valoracion(models.Model):
     receta = models.ForeignKey(Receta, on_delete=models.CASCADE, related_name='valoraciones')
-    user = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)
-    puntaje = models.IntegerField(choices=VALORACION,default=5)
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    puntaje = models.IntegerField()
+
 
     class Meta:
         unique_together = ('receta', 'user')  # un usuario no puede valorar la misma receta más de una vez

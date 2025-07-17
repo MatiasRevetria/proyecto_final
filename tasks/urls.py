@@ -4,18 +4,18 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('home/',main_page),
-    path('logout/',logout_user),
+    path('home/',MainPageView.as_view()),
+    path('logout/',LogoutUserView.as_view()),
 #   path('recetas/<int:id>',recetas),
-    path('recetas/',recetas),
-    path('favoritas/',favoritas),
-    path('nueva/',crear_receta),
-    path('editar/<int:id>' , editar_receta, name='editar_receta'),
-    path('eliminar/<int:id>',eliminar_receta, name='eliminar_receta'),
-    path('mis_recetas/',mis_recetas, name = 'mis_recetas'),
-    path('cocinado/<int:receta_id>', marcar_cocinada, name= 'marcar_cocinada'),
-    path('noconinada/<int:receta_id>',desmarcar_cocinada, name= 'desmarcar_cocinada'),
-    path('favorita/<int:receta_id>', marcar_favorita, name= 'marcar_favorita'),
-    path('nofavorita/<int:receta_id>',desmarcar_favorita, name='desmarcar_favorita'),
-    path('valorar/<int:receta_id>/', valorar_receta, name='valorar_receta')
+    path('recetas/',RecetaListView.as_view()),
+    path('favoritas/',FavoritasView.as_view()),
+    path('nueva/',CrearRecetaView.as_view()),
+    path('editar/<int:id>' , EditarRecetaView.as_view(), name='editar_receta'),
+    path('eliminar/<int:id>',EliminarRecetaView.as_view(), name='eliminar_receta'),
+    path('mis_recetas/',MisRecetasView.as_view(), name = 'mis_recetas'),
+    path('cocinado/<int:receta_id>', MarcarCocinadaView.as_view(), name= 'marcar_cocinada'),
+    path('noconinada/<int:receta_id>',DesmarcarCocinadaView.as_view(), name= 'desmarcar_cocinada'),
+    path('favorita/<int:receta_id>', MarcarCocinadaView.as_view(), name= 'marcar_favorita'),
+    path('nofavorita/<int:receta_id>',DesmarcarFavoritaView.as_view(), name='desmarcar_favorita'),
+    path('valorar/<int:receta_id>/', ValorarRecetaView.as_view(), name='valorar_receta')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
