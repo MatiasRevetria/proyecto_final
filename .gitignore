@@ -59,6 +59,3 @@ media/
 staticfiles/
 
 venv/
-
-*.log
-*.sqlite3
