@@ -1,0 +1,15 @@
+{% extends 'main.html' %}
+
+{% block content %}
+  <h1>Mis recetas cocinadas</h1>
+
+    {% if cocinadas %}
+        {% for receta in cocinadas %}
+            <li>{{ receta }}</li>
+        {% endfor %}
+    {% else %}
+        <p>No tenés recetas cocinadas aún.</p>
+    {% endif %}
+
+
+{% endblock %}

@@ -11,16 +11,15 @@
     <header>
         <div class="nav">
             <h1>REVETAS {{title}}</h1>
-            <a href="/recetas/">recetas</a>
+            <a href="/recetas/">Recetas</a>
             <a href="/mis_recetas/">Mis recetas</a>
             <a href="/favoritas/">Mis favoritas</a>
+            <a href="/cocinadas/">Mis cocinadas</a>
             <a href="/nueva/">Crear receta</a>
             
             <div style="margin-left: auto; padding-right: 20px;">
                 {% if request.user.is_authenticated %}
-                    Usuario: {{ request.user.username }}
-                {% elif request.session.username %}
-                    Usuario: {{ request.session.username }}
+                    <h1>{{request.user.username}}</h1>
                 {% else %}
                     <a href="/login/">Iniciar sesión</a>
                 {% endif %}

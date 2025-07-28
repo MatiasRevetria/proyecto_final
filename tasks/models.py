@@ -107,6 +107,13 @@ class RecetaFavorita(models.Model):
 
     def __str__(self) -> str:
         return self.user.name + self.receta.title
+    
+class RecetaCocinada(models.Model):
+    user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+    receta = models.ForeignKey(Receta,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.name + self.receta.title
 
 class Notificacion(models.Model):
     tipo = models.CharField(max_length=255)

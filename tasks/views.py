@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View, ListView, CreateView, UpdateView, DeleteView, TemplateView, RedirectView
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
-from .models import Receta, Comentario, Valoracion, RecetaFavorita
+from .models import Receta, Comentario, Valoracion, RecetaFavorita, RecetaCocinada
 from user_login.models import Usuario
 from .forms import RecetaNueva, ComentarReceta, RecetaIngrediente, RecetaIngredienteFormSet
 
@@ -15,6 +15,7 @@ class MainPageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Django-course'
         context['recetas'] = Receta.objects.all()
+        context['usuario'] = Usuario.objects.get('name')
         return context
 
 
@@ -30,16 +31,21 @@ class RecetaListView(View):
     template_name = 'recetas.html'
 
     def get(self, request):
+        categoria = request.GET.get('categoria')
         recetas = Receta.objects.all()
+        if categoria:
+            recetas = recetas.filter(categoria=categoria)
         usuario_id = request.session.get('usuario_id')
         forms_dict = {receta.id: ComentarReceta() for receta in recetas}
         favoritas_ids = RecetaFavorita.objects.filter(user_id=usuario_id).values_list('receta_id', flat=True)
+        cocinadas_ids = RecetaCocinada.objects.filter(user_id=usuario_id).values_list('receta_id',flat=True)
 
         return render(request, self.template_name, {
             'recetas': recetas,
             'usuario_id': usuario_id,
             'forms_dict': forms_dict,
             'favoritas_ids': list(favoritas_ids),
+            'cocinadas_ids': list(cocinadas_ids),
         })
 
     def post(self, request):
@@ -73,19 +79,38 @@ class MisRecetasView(ListView):
 
 class MarcarCocinadaView(View):
     def get(self, request, receta_id):
-        receta = get_object_or_404(Receta, id=receta_id)
-        receta.cooked = True
-        receta.save()
+        usuario_id = request.session.get('usuario_id')
+        if usuario_id:
+            receta = get_object_or_404(Receta, id=receta_id)
+            user = get_object_or_404(Usuario,id=usuario_id)
+            RecetaCocinada.objects.get_or_create(user=user, receta=receta);   
         return redirect('/recetas/')
 
 
 class DesmarcarCocinadaView(View):
     def get(self, request, receta_id):
-        receta = get_object_or_404(Receta, id=receta_id)
-        receta.cooked = False
-        receta.save()
+        usuario_id = request.session.get('usuario_id')
+        if usuario_id:
+            user = get_object_or_404(Usuario,id=usuario_id)
+            receta = get_object_or_404(Receta,id=receta_id)
+            RecetaCocinada.objects.filter(user=user,receta=receta).delete()
         return redirect('/recetas/')
 
+class CocinadasView(ListView):
+    template_name = 'cooked.html'
+    context_object_name = 'cocinadas'
+
+    def get_queryset(self):
+        usuario_id = self.request.session.get('usuario_id')
+        if not usuario_id:
+            return Receta.objects.none()
+        return Receta.objects.filter(id__in=RecetaCocinada.objects.filter(user_id=usuario_id).values_list('receta_id',flat=True))
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not context['cocinadas']:
+            context['mensaje'] = 'No cocinaste nada todavia!'
+        return context
 
 class MarcarFavoritaView(View):
     def get(self, request, receta_id):
