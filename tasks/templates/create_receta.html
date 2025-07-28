@@ -7,14 +7,60 @@
     {{ form.as_p }}
 
     <h3>Ingredientes:</h3>
-    {{ formset.management_form }}
-    {% for subform in formset %}
-        <div>
-            {{ subform.nombre }} {{ subform.unidad }} {{ subform.cantidad }}
-        </div>
-    {% endfor %}
+    <div id="formset-area">
+        {{ ingredientes.management_form }}
+        {% for form in ingredientes %}
+            <div class="form-row">
+                {{ form.as_p }}
+            <button type="button" class="del-form">Eliminar Ingrediente </button>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" id="add-form">Agregar Ingrediente </button>
+    
+    <br><br>
 
     <button type="submit">Crear receta</button>
 </form>
 
+<script>
+    document.addEventListener('DOMContentLoaded',()=>{
+        const formsetArea = document.getElementById('formset-area');
+        const addBtn = document.getElementById('add-form');
+        const delBtn = document.getElementById('del-form');
+        const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+
+        addBtn.addEventListener('click',()=>{
+            const currentFormCount = parseInt(totalForms.value);
+            const newForm = formsetArea.querySelector('.form-row').cloneNode(true);
+        
+            //Limpiar valores del nuevo form
+            newForm.querySelectorAll('input').forEach(input => input.value = '');
+
+            //Reemplazar los indices en los atrs name y id
+            newForm.innerHTML = newForm.innerHTML.replace(/form-(\d)-/g, `form-${currentFormCount}-`);
+
+            formsetArea.appendChild(newForm);
+            totalForms.value = currentFormCount + 1;
+        });
+
+        formsetArea.addEventListener('click', (event)=>{
+            if(event.target && event.target.classList.contains('del-form')){
+                const forms = formsetArea.querySelectorAll('.form-row');
+                const ingredientToRemove = event.target.closest('.form-row');
+
+                if(forms.length > 1){
+                    ingredientToRemove.remove();
+                    totalForms.value = forms.length -1
+                }else{
+                    alert('Debe haber al menos un ingrediente')
+                }
+            }
+        });
+        
+    });
+</script>
+
 {% endblock %}
+

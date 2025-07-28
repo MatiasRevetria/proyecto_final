@@ -1,11 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-        
-</body>
-</html>
+{% extends 'main.html' %}
+
+{% block content %}
+  <h1>Mis recetas favoritas</h1>
+
+    {% if favoritas %}
+        {% for receta in favoritas %}
+            <li>{{ receta }}</li>
+        {% endfor %}
+    {% else %}
+        <p>No tenés recetas favoritas aún.</p>
+    {% endif %}
+
+
+{% endblock %}

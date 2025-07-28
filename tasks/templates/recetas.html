@@ -8,11 +8,12 @@
     <div>
         <div>
             <h1>
-                {% if receta.favs == True %}
-                {{receta.title}} ⭐
+                {% if receta.id in favoritas_ids %}
+                    {{ receta.title }} ⭐
                 {% else %}
-                {{receta.title}}
+                    {{ receta.title }}
                 {% endif %}
+
             </h1>
             
             {% if receta.cooked == False%}
@@ -104,15 +105,12 @@
         </a>
         {% endif %}
 
-        {% if receta.favs == True %}
-        <a href="{% url 'desmarcar_favorita' receta.id %}">
-            <button> No es mi favorita</button>
-        </a>
+        {% if receta.id in favoritas_ids %}
+            <a href="{% url 'desmarcar_favorita' receta.id %}"><button>No es mi favorita</button></a>
         {% else %}
-        <a href="{% url 'marcar_favorita' receta.id %}">
-            <button> Es mi favorita!</button>
-        </a>
+            <a href="{% url 'marcar_favorita' receta.id %}"><button>Es mi favorita!</button></a>
         {% endif %}
+
         
         {% if receta.user.id == usuario_id %}
         <a href="{% url 'editar_receta' receta.id %}"> Editar</a>

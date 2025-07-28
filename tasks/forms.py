@@ -26,11 +26,15 @@ class ComentarReceta(forms.ModelForm):
             })
         }
 
+class RecetaIngredienteForm(forms.ModelForm):
+    class Meta:
+        model = RecetaIngrediente
+        fields = ['nombre','cantidad','unidad']
+
 RecetaIngredienteFormSet = modelformset_factory(
     RecetaIngrediente,
-    fields=('nombre', 'cantidad', 'unidad'),
-    extra=3,
-    can_delete=True
+    form=RecetaIngredienteForm,
+    extra=1,
 )
 
 class ValorarRecetaForm(forms.ModelForm):

@@ -3,9 +3,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View, ListView, CreateView, UpdateView, DeleteView, TemplateView, RedirectView
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
-from .models import Receta, Comentario, Valoracion
+from .models import Receta, Comentario, Valoracion, RecetaFavorita
 from user_login.models import Usuario
-from .forms import RecetaNueva, ComentarReceta
+from .forms import RecetaNueva, ComentarReceta, RecetaIngrediente, RecetaIngredienteFormSet
 
 
 class MainPageView(TemplateView):
@@ -33,10 +33,13 @@ class RecetaListView(View):
         recetas = Receta.objects.all()
         usuario_id = request.session.get('usuario_id')
         forms_dict = {receta.id: ComentarReceta() for receta in recetas}
+        favoritas_ids = RecetaFavorita.objects.filter(user_id=usuario_id).values_list('receta_id', flat=True)
+
         return render(request, self.template_name, {
             'recetas': recetas,
             'usuario_id': usuario_id,
             'forms_dict': forms_dict,
+            'favoritas_ids': list(favoritas_ids),
         })
 
     def post(self, request):
@@ -86,35 +89,69 @@ class DesmarcarCocinadaView(View):
 
 class MarcarFavoritaView(View):
     def get(self, request, receta_id):
-        receta = get_object_or_404(Receta, id=receta_id)
-        receta.favs = True
-        receta.save()
+        usuario_id = request.session.get('usuario_id')
+        if usuario_id:
+            receta = get_object_or_404(Receta, id=receta_id)
+            user = get_object_or_404(Usuario,id=usuario_id)
+            RecetaFavorita.objects.get_or_create(user=user, receta=receta)
         return redirect('/recetas/')
 
 
 class DesmarcarFavoritaView(View):
     def get(self, request, receta_id):
-        receta = get_object_or_404(Receta, id=receta_id)
-        receta.favs = False
-        receta.save()
+        usuario_id = request.session.get('usuario_id')
+        if usuario_id:
+            receta = get_object_or_404(Receta, id = receta_id)
+            user = get_object_or_404(Usuario,id = usuario_id)
+            RecetaFavorita.objects.filter(user=user, receta=receta).delete()
         return redirect('/recetas/')
 
 
-class FavoritasView(TemplateView):
-    template_name = 'favoritas.html'
+class FavoritasView(ListView):
+    template_name = 'favorites.html'
+    context_object_name = 'favoritas'
+
+    def get_queryset(self):
+        usuario_id = self.request.session.get('usuario_id')
+        if not usuario_id:
+            return Receta.objects.none()
+        return Receta.objects.filter(id__in=RecetaFavorita.objects.filter(user_id=usuario_id).values_list('receta_id', flat=True))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if not context['favoritas']:
+            context['mensaje'] = 'No tienes recetas favoritas'
+        return context
+        
+
 
 
 class CrearRecetaView(CreateView):
-    model = Receta
-    form_class = RecetaNueva
     template_name = 'create_receta.html'
-    success_url = reverse_lazy('recetas')
 
-    def form_valid(self, form):
-        usuario_id = self.request.session.get('usuario_id')
-        form.instance.user = Usuario.objects.get(id=usuario_id)
-        return super().form_valid(form)
+    def get(self, request):
+        receta_form = RecetaNueva()
+        ingrediente_formSet = RecetaIngredienteFormSet(queryset=RecetaIngrediente.objects.none())
+        return render(request, self.template_name, {'form':receta_form, 'ingredientes':ingrediente_formSet})
 
+    def post(self, request,):
+        receta_form = RecetaNueva(request.POST, request.FILES)
+        ingrediente_formset = RecetaIngredienteFormSet(request.POST)
+
+        if receta_form.is_valid() and ingrediente_formset.is_valid():
+            usuario_id = request.session.get('usuario_id')
+            receta = receta_form.save(commit=False)
+            receta.user = Usuario.objects.get(id=usuario_id)
+            receta.save()
+
+            ingredientes = ingrediente_formset.save(commit=False)
+            for ing in ingredientes:
+                ing.receta = receta
+                ing.save()
+        
+            return redirect('recetas')
+        return render( request, self.template_name, {'form': receta_form, 'ingredientes': ingrediente_formset})
+    
 
 class EditarRecetaView(UpdateView):
     model = Receta
