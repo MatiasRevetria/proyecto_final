@@ -18,8 +18,11 @@
             <a href="/nueva/">Crear receta</a>
             
             <div style="margin-left: auto; padding-right: 20px;">
-                {% if request.user.is_authenticated %}
-                    <h1>{{request.user.username}}</h1>
+                {% if usuario %}
+                    <div>
+                        <h3>{{usuario.name}}</h3>
+                        <a href="/login/">🙋‍♂️</a>
+                    </div>
                 {% else %}
                     <a href="/login/">Iniciar sesión</a>
                 {% endif %}

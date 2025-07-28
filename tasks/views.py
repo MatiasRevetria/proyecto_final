@@ -10,12 +10,13 @@ from .forms import RecetaNueva, ComentarReceta, RecetaIngrediente, RecetaIngredi
 
 class MainPageView(TemplateView):
     template_name = 'main.html'
-
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Django-course'
-        context['recetas'] = Receta.objects.all()
-        context['usuario'] = Usuario.objects.get('name')
+        usuario_id = self.request.session.get('usuario_id')
+        if usuario_id:
+            context['usuario'] = Usuario.objects.get(id=usuario_id)
         return context
 
 
