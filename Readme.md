@@ -75,15 +75,10 @@ ciertos requisitos de complejidad.
 
 ## Docker
 
-### Construir la imagen
+### Construir la imagen y ejecutar
 
 ```bash
-docker build -t revetas-app .
-````
-
-### Ejecutar imagen local
-```bash
-docker run -p 8080:8000 revetas-app
+docker-compose up --build
 ```
 
 ### Iniciar aplicacion
