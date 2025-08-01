@@ -7,7 +7,7 @@ urlpatterns = [
     path('home/',MainPageView.as_view()),
     path('logout/',LogoutUserView.as_view()),
 #   path('recetas/<int:id>',recetas),
-    path('recetas/',RecetaListView.as_view()),
+    path('recetas/',RecetaListView.as_view(), name='recetas'),
     path('favoritas/',FavoritasView.as_view(), name='favoritas'),
     path('cocinadas/',CocinadasView.as_view(), name='cocinadas'),
     path('nueva/',CrearRecetaView.as_view()),
