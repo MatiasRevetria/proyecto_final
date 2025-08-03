@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View, ListView, CreateView, UpdateView, DeleteView, TemplateView, RedirectView
 from django.http import HttpResponse, JsonResponse
 from django.urls import reverse_lazy
-from .models import Receta, Comentario, Valoracion, RecetaFavorita, RecetaCocinada
+from .models import *
 from user_login.models import Usuario
 from .forms import RecetaNueva, ComentarReceta, RecetaIngrediente, RecetaIngredienteFormSet
 
@@ -209,3 +209,42 @@ class ValorarRecetaView(View):
             defaults={"puntaje": puntaje}
         )
         return redirect('/recetas/')
+
+class GenerarListaCompraView(View):
+    def post(self, request):
+        receta_ids = request.POST.getlist('recetas')  # lista de IDs de recetas
+        usuario_id = request.session.get('usuario_id')
+        user = Usuario.objects.get(id=usuario_id)
+
+        lista, _ = ListaCompra.objects.get_or_create(user=user, comprada=False)
+
+        for receta_id in receta_ids:
+            receta = get_object_or_404(Receta, id=receta_id)
+            for ingrediente in receta.ingredientes.all():
+                ItemListaCompra.objects.create(
+                    lista=lista,
+                    nombre=ingrediente.nombre,
+                    cantidad=ingrediente.cantidad,
+                    unidad=ingrediente.unidad
+                )
+
+        return redirect('ver_lista_compra')
+    
+class MarcarListaComoCompradaView(View):
+    def post(self, request):
+        usuario_id = request.session.get('usuario_id')
+        user = Usuario.objects.get(id=usuario_id)
+        lista = get_object_or_404(ListaCompra, user=user, comprada=False)
+        lista.vaciar()
+        return redirect('ver_lista_compra')
+
+class VerListaCompraView(TemplateView):
+    template_name = 'lista_compra.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario_id = self.request.session.get('usuario_id')
+        lista = ListaCompra.objects.filter(user_id=usuario_id, comprada=False).first()
+        context['lista'] = lista
+        return context
+

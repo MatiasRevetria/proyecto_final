@@ -1,0 +1,21 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<h2>Lista de compras</h2>
+
+{% if lista %}
+  <ul>
+    {% for item in lista.items.all %}
+      <li>{{ item.cantidad }} {{ item.unidad }} de {{ item.nombre }}</li>
+    {% endfor %}
+  </ul>
+  <form method="post" action="{% url 'marcar_lista' %}">
+    {% csrf_token %}
+    <button type="submit">Marcar como comprada</button>
+  </form>
+{% else %}
+  <p>No hay lista activa.</p>
+{% endif %}
+
+{% endblock %}

@@ -120,3 +120,25 @@ class Notificacion(models.Model):
     msj = models.TextField()
     fecha = models.DateField(default=timezone.now)
     user = models.ForeignKey(Usuario,on_delete=models.CASCADE)
+
+class ListaCompra(models.Model):
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    creada = models.DateTimeField(auto_now_add=True)
+    comprada = models.BooleanField(default=False)
+
+    def vaciar(self):
+        self.items.all().delete()
+        self.comprada = True
+        self.save()
+
+    def __str__(self):
+        return f"Lista de {self.user.name} - {'Comprada' if self.comprada else 'Pendiente'}"
+
+class ItemListaCompra(models.Model):
+    lista = models.ForeignKey(ListaCompra, on_delete=models.CASCADE, related_name='items')
+    nombre = models.CharField(max_length=255)
+    cantidad = models.FloatField()
+    unidad = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.nombre} - {self.cantidad} {self.unidad}"
