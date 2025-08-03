@@ -1,10 +1,8 @@
 from django.urls import path
-from django.contrib.auth.forms import UserCreationForm
-from .views import *
-#from . import views => views.<funcion>
+from .views import RegisterUserView, LoginUserView, LandingPageView
 
 urlpatterns = [
-    path('register/',create_user),
-    path('login/',login_user),
-    path('',landing_page),
+    path('register/', RegisterUserView.as_view(), name='register'),
+    path('login/', LoginUserView.as_view(), name='login'),
+    path('', LandingPageView.as_view(), name='landing'),
 ]
