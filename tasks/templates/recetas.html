@@ -50,13 +50,6 @@
             {% endfor %}
         </ul>
 
-        <p>Pasos:</p>
-        <ol>
-            {% for paso in receta.steps %}
-                <li>{{ paso }}</li>
-            {% endfor %}
-        </ol>
-
         <p><strong>Dificultad:</strong> {{ receta.dificultad }}</p>
         <p><strong>Categoría:</strong> {{ receta.categoria }}</p>
         <p><strong>Valoración promedio:</strong> {{ receta.promedio_valoracion|floatformat:1 }} ⭐</p>
