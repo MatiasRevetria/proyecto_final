@@ -5,7 +5,22 @@
 
     {% if cocinadas %}
         {% for receta in cocinadas %}
-            <li>{{ receta }}</li>
+            <h1>{{ receta.title }}</h1>
+        {% if receta.image %}
+        <img src="{{ receta.image.url }}" alt="Imagen de la receta" style="width:200px;">
+        {% endif %}
+        <p>{{ receta.description }}</p>
+        <p>Tiempo de cocción: {{ receta.coccion }} minutos</p>
+
+        <p>Ingredientes:</p>
+        <ul>
+            {% for ingrediente in receta.ingredientes.all %}
+                <li>{{ ingrediente.cantidad }} {{ ingrediente.unidad }} de {{ ingrediente.nombre }}</li>
+            {% endfor %}
+        </ul>
+
+        <p><strong>Dificultad:</strong> {{ receta.dificultad }}</p>
+        <p><strong>Categoría:</strong> {{ receta.categoria }}</p>
         {% endfor %}
     {% else %}
         <p>No tenés recetas cocinadas aún.</p>
