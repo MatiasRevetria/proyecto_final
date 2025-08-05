@@ -120,7 +120,9 @@
             <a href="{% url 'eliminar_receta' receta.id %}">Eliminar</a>
         {% endif %}
     </div>
-    <form method="post" action="{% url 'generar_lista' %}">
+</div>
+{% endfor %}
+<form method="post" action="{% url 'generar_lista' %}">
         {% csrf_token %}
             <h3>Seleccioná recetas para generar la lista:</h3>
         {% for receta in recetas %}
@@ -128,7 +130,4 @@
         {% endfor %}
             <button type="submit">Generar lista de compras</button>
         </form>
-</div>
-{% endfor %}
-
 {% endblock %}
