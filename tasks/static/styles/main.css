@@ -1,62 +1,148 @@
 /* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #e0f7fa, #fff);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f2f4f8;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header y navegación */
 header {
-    background-color: #145a32;
-    color: white;
-    padding: 20px;
+  background-color: #1b3c34;
+  color: white;
+  padding: 15px 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .nav h1 {
-    font-size: 2rem;
-    margin-right: 20px;
+  font-size: 2rem;
+  margin-right: auto;
+  color: #fffacd;
 }
 
 .nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background-color 0.3s;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background-color: transparent;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 .nav a:hover {
-    background-color: #0e3d22;
+  background-color: #2e8b57;
+  transform: translateY(-1px);
 }
 
 /* Main content */
 main {
-    flex: 1;
-    padding: 40px;
-    background-color: #f7f7f7;
+  flex: 1;
+  padding: 40px 40px;
+  background-color: #f7f7f7;
+  max-width: 1400px; /* o eliminá directamente esto */
+  margin: 0 auto;
+}
+
+.receta-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+
+
+/* Secciones */
+section {
+  margin-bottom: 40px;
+}
+
+h1, h2, h3 {
+  color: #2e3a59;
+  margin-bottom: 15px;
+}
+
+p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+/* Recetas y tarjetas */
+.receta-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.receta-card img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+/* Botones */
+button, .btn {
+  background-color: #1b3c34;
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover, .btn:hover {
+  background-color: #2e8b57;
+}
+
+form button {
+  margin-top: 10px;
+}
+
+/* Inputs */
+input, select, textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 /* Footer */
 footer {
-    background-color: #222;
-    color: #aaa;
-    text-align: center;
-    padding: 15px 0;
-    font-size: 0.9rem;
+  background-color: #1b3c34;
+  color: #eee;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  main {
+    padding: 20px 15px;
+  }
 }

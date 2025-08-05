@@ -14,17 +14,16 @@ class RegisterUserView(View):
     def post(self, request):
         form = New_user(request.POST)
         if form.is_valid():
-            name = request.POST['name']
-            passwd1 = request.POST['passwd']
-            passwd2 = request.POST['passwd2']
+            name = form.cleaned_data['name']
+            passwd1 = form.cleaned_data['passwd']
+            passwd2 = form.cleaned_data['passwd2']
 
             if passwd1 != passwd2:
                 return render(request, self.template_name, {
                     'form': form,
-                    'error': 'Las contraseñas no coinciden.'
+                    'error': 'Las contraseñas no coinciden'
                 })
 
-            # Validación de complejidad mínima
             if len(passwd1) < 8 or not re.search(r'[A-Z]', passwd1) or not re.search(r'\d', passwd1):
                 return render(request, self.template_name, {
                     'form': form,
@@ -34,16 +33,16 @@ class RegisterUserView(View):
             if Usuario.objects.filter(name=name).exists():
                 return render(request, self.template_name, {
                     'form': form,
-                    'error': 'Este usuario ya existe.'
+                    'error': 'Este usuario ya existe'
                 })
 
             usuario = Usuario(name=name)
             usuario.set_password(passwd1)
             usuario.save()
             request.session['usuario_id'] = usuario.id
-            return redirect('/recetas/')
-        
+            return redirect('/recetas/')  # Esto retorna 302
         return render(request, self.template_name, {'form': form})
+
 
 
 class LoginUserView(View):
@@ -53,25 +52,24 @@ class LoginUserView(View):
         return render(request, self.template_name, {'form': Old_user()})
 
     def post(self, request):
-        name = request.POST['name']
-        passwd = request.POST['passwd']
+        form = Old_user(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            passwd = form.cleaned_data['passwd']
 
-        try:
-            usuario = Usuario.objects.get(name=name)
-        except Usuario.DoesNotExist:
-            return render(request, self.template_name, {
-                'form': Old_user(),
-                'error': 'Usuario no encontrado'
-            })
+            try:
+                usuario = Usuario.objects.get(name=name)
+                if usuario.check_password(passwd):
+                    request.session['usuario_id'] = usuario.id
+                    return redirect('/recetas/')  # Esto retorna 302
+            except Usuario.DoesNotExist:
+                pass
 
-        if usuario.check_password(passwd):
-            request.session['usuario_id'] = usuario.id
-            return redirect('/recetas/')
-        else:
             return render(request, self.template_name, {
-                'form': Old_user(),
-                'error': 'Contraseña incorrecta'
+                'form': form,
+                'error': 'Usuario o contraseña incorrectos'  # Mensaje que tu test busca
             })
+        return render(request, self.template_name, {'form': form})
 
 
 class LandingPageView(View):

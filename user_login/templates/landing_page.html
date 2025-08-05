@@ -17,34 +17,40 @@
     <main>
         <section id="hero-section">
             <video src="{% static 'img/Comida típica de Italia 🍕 _ ¡10 platos que te encantarán!.mp4' %}" autoplay loop muted></video>
-            <article id="iframe-description"></article>
+            <article id="iframe-description">
+                Bienvenido a REVETAS: tus recetas favoritas en un solo lugar 🍽️
+            </article>
+
         </section>
         <section id="cards">
-            <div>
-                <img src="{% static 'img/pngwing.com.png' %}" alt="REVETAS_LOGO">
-                <h2>Nombre receta</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ab officia quod, delectus adipisci incidunt consequuntur qui iste similique repellat ducimus sunt doloremque inventore voluptatum autem omnis quidem eveniet. Illum.</p>
-                <p>fecha fake</p>
-                <p>usuario fake</p>
+        <div class="card">
+            <img src="{% static 'img/asado.jpg' %}" alt="Asado argentino">
+            <div class="card-text">
+            <h2>Asado argentino</h2>
+            <p>El clásico argentino por excelencia: cortes de carne asada al carbón, jugosa y sabrosa, servida con chimichurri o ensalada.</p>
             </div>
-            <div>
-                <img src="{% static 'img/pngwing.com.png' %}" alt="REVETAS_LOGO">
-                <h2>Nombre receta</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ab officia quod, delectus adipisci incidunt consequuntur qui iste similique repellat ducimus sunt doloremque inventore voluptatum autem omnis quidem eveniet. Illum.</p>
-                <p>fecha fake</p>
-                <p>usuario fake</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'img/empanadas.jpg' %}" alt="Empanadas criollas">
+            <div class="card-text">
+            <h2>Empanadas criollas</h2>
+            <p>Masa crujiente con un relleno jugoso de carne, huevo y especias como comino y pimentón. Especialidad popular en todo el país.</p>
             </div>
-            <div>
-                <img src="{% static 'img/pngwing.com.png' %}" alt="REVETAS_LOGO">
-                <h2>Nombre receta</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque ab officia quod, delectus adipisci incidunt consequuntur qui iste similique repellat ducimus sunt doloremque inventore voluptatum autem omnis quidem eveniet. Illum.</p>
-                <p>fecha fake</p>
-                <p>usuario fake</p>
+        </div>
+        <div class="card">
+            <img src="{% static 'img/humita.jpg' %}" alt="Humita en chala">
+            <div class="card-text">
+            <h2>Humita en chala</h2>
+            <p>Pasta de maíz fresco cocida con cebolla, pimientos y especias. Cocida en hojas de choclo que le aportan un aroma único.</p>
             </div>
+        </div>
         </section>
-        <section id="fakes">
-            
-        </section>
+
+        <div class="login-btn-container">
+            <a href="/login/" class="login-button">Iniciar sesión</a>
+        </div>
+
+
     </main>
     <footer>
 
