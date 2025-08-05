@@ -1,31 +1,148 @@
-*{
-    padding: 0%;
-    margin: 0%;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body{
-    position: relative;
+body {
+  position: relative;
+  color: #fff;
+  min-height: 100vh;
 }
 
-.background-overlay{
-    position: fixed;
-    top: 0;
-    left: 0;
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../img/fondo_cocina.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0.7;
+  z-index: -1;
+}
+
+header {
+  padding: 20px;
+  text-align: center;
+}
+
+#hero-section {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  overflow: hidden;
+}
+
+#hero-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.5;
+}
+
+#iframe-description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 1;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px black;
+}
+
+#cards {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 1200px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+.card img {
     width: 100%;
-    height: 100%;
-    background-image: url("../img/fondo_cocina.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    opacity: 0.65;
-    z-index: -1;
+    height: 250px;
+    object-fit: cover;
+    display: block;
 }
 
+.card-text {
+    padding: 15px;
+}
 
-main{
+.card-text h2 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    color: #444;
+}
+
+.card-text p {
+    font-size: 1rem;
+    color: #444;
+}
+
+.login-btn-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin: 40px 0;
 }
 
+.login-button {
+    background-color: #d35400;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.login-button:hover {
+    background-color: #e67e22;
+}
+
+
+
+footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#cards > div {
+  animation: fadeUp 0.8s ease forwards;
+}
