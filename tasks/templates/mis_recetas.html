@@ -10,8 +10,10 @@
             <img src="{{recetas.image.url}}" alt="Imagen de la receta" style="width: 200px;">
         {% endif %}
         <p>{{ recetas.description }}</p>
-        <p>Ingredientes: {{ recetas.ingredients }}</p>
-        <p>Instrucciones: {{ recetas.instructions }}</p>
+        <p>Ingredientes:</p>
+        {% for ingrediente in recetas.ingredientes.all %}
+            <li>{{ ingrediente.cantidad }} {{ ingrediente.unidad }} de {{ ingrediente.nombre }}</li>
+          {% endfor %}
         <a href="{% url 'eliminar_receta' recetas.id %}">Eliminar receta</a>
         <a href="{% url 'editar_receta' recetas.id %}">Editar receta</a>
     </div>
