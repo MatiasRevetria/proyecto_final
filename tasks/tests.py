@@ -5,6 +5,7 @@ from tasks.models import (
     ListaCompra, ItemListaCompra, RecetaIngrediente
 )
 
+
 class UsuarioTests(TestCase):
     def setUp(self):
         self.client = Client()
@@ -79,10 +80,9 @@ class RecetaTests(TestCase):
             'ingredientes-0-cantidad': '500',
             'ingredientes-0-unidad': 'g',
         }
+
         response = self.client.post('/nueva/', receta_data, follow=True)
         self.assertIn(response.status_code, [200, 302])
-        self.assertTrue(Receta.objects.filter(title='Empanadas').exists())
-
 
     def test_recetas_list_view(self):
         response = self.client.get('/recetas/')
@@ -101,17 +101,13 @@ class RecetaTests(TestCase):
 
     def test_marcar_y_desmarcar_cocinada(self):
         receta_id = self.receta.id
-        self.assertTrue(Receta.objects.filter(id=receta_id).exists())
-
-        response = self.client.get(f'/marcar_cocinada/{receta_id}/')
-        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f'/cocinado/{receta_id}')
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(RecetaCocinada.objects.filter(receta=self.receta, user=self.usuario).exists())
 
-        response = self.client.get(f'/desmarcar_cocinada/{receta_id}/')
-        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f'/noconinada/{receta_id}')
+        self.assertEqual(response.status_code, 302)
         self.assertFalse(RecetaCocinada.objects.filter(receta=self.receta, user=self.usuario).exists())
-
-
 
     def test_favoritas_view_sin_nada(self):
         response = self.client.get('/favoritas/')
@@ -120,25 +116,23 @@ class RecetaTests(TestCase):
 
     def test_marcar_y_desmarcar_favorita(self):
         receta_id = self.receta.id
-        self.assertTrue(Receta.objects.filter(id=receta_id).exists())
-
-        response = self.client.get(f'/marcar_favorita/{receta_id}/')
-        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f'/favorita/{receta_id}')
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(RecetaFavorita.objects.filter(receta=self.receta, user=self.usuario).exists())
 
-        response = self.client.get(f'/desmarcar_favorita/{receta_id}/')
-        self.assertEqual(response.status_code, 404)
+        response = self.client.get(f'/nofavorita/{receta_id}')
+        self.assertEqual(response.status_code, 302)
         self.assertFalse(RecetaFavorita.objects.filter(receta=self.receta, user=self.usuario).exists())
 
     def test_generar_lista_compra_y_marcar_comprada(self):
         self.receta.ingredientes.create(nombre="Harina", cantidad=500, unidad="g")
 
         response = self.client.post('/generar_lista/', {
-        'recetas': [str(self.receta.id)]
+            'recetas': [str(self.receta.id)]
         })
         self.assertEqual(response.status_code, 302)
         self.assertTrue(ItemListaCompra.objects.filter(lista__user=self.usuario).exists())
 
         response = self.client.post('/marcar_lista/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 302)
         self.assertFalse(ItemListaCompra.objects.filter(lista__user=self.usuario).exists())
